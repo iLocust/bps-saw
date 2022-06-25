@@ -35,13 +35,7 @@
                       <p>Jember</p>
                     </div>
                   </div>
-                  <div class="media">
-                    <div class="media-icon"><i class="far fa-circle"></i></div>
-                    <div class="media-body">
-                      <h6>Dida Arda</h6>
-                      <p>PT. TATI</p>
-                    </div>
-                </div>
+
               </div>
             </div>
           </div>

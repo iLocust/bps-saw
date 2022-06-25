@@ -5,10 +5,10 @@
         <div class="section-header-back">
             <a href="{{'/home'}}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
-        <h1>Penilaian</h1>
+        <h1>Perankingan</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{'/home'}}">Dashboard</a></div>
-            <div class="breadcrumb-item">Penilaian</div>
+            <div class="breadcrumb-item">Ranking</div>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
                 <x-alert />
                 <div class="card">
                     <div class="card-header">
-                        <h4>Alternatif & Nilai</h4>
+                        <h4>Nilai</h4>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -29,19 +29,18 @@
                             </button>
                         </div>
                         @endif
-                        <br>
-                        <table id="mytable" class="display nowrap table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    @foreach ($kriteria as $c)
-                                    <th>{{$c->namaKriteria}}</th>
-                                    @endforeach
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="myTable2">
+                                <tbody>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        @foreach ($kriteria as $c)
+                                        <th>{{$c->namaKriteria}}</th>
+                                        @endforeach
+                                        <th onclick="sortTable(0)">Total</th>
+                                    </tr>
                                     @foreach ($user as $a)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -55,12 +54,46 @@
                                         $total += $s->nilai;
                                         @endphp
                                         <td>{{$s->nilai}}</td>
-                                        @endforeach 
-                                        <td>{{$total}}</td>                                    
+                                        @endforeach
+                                        <td ><b>{{$total}}</b></td>
                                     </tr>
                                     @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <!-- <table id="mytable" class="display nowrap table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    @foreach ($kriteria as $c)
+                                    <th>{{$c->namaKriteria}}</th>
+                                    @endforeach
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($user as $a)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $a->name}}</td>
+                                    @php
+                                    $scr = $scores->where('ida', $a->id)->all();
+                                    $total = 0;
+                                    @endphp
+                                    @foreach ($scr as $s)
+                                    @php
+                                    $total += $s->nilai;
+                                    @endphp
+                                    <td>{{$s->nilai}}</td>
+                                    @endforeach
+                                    <td>{{$total}}</td>
+                                </tr>
+                                @endforeach
                             </tbody>
-                        </table>
+                        </table> -->
                     </div>
                 </div>
             </div>
@@ -89,4 +122,5 @@
         $(".select2").select2();
     });
 </script>
+
 @endpush

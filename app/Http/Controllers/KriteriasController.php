@@ -23,7 +23,7 @@ class KriteriasController extends Controller
     {
         Kriterias::findOrFail($kriteria)->delete();
 
-        return redirect()->back()->with('success', 'Penugasan berhasil dihapus');
+        return redirect()->back()->with('success', 'Kriteria berhasil dihapus');
     }
     /**
      * Show the form for creating a new resource.
@@ -58,7 +58,7 @@ class KriteriasController extends Controller
         //     'bobot' => $request->bobot,
         // ]);
 
-        return redirect()->back()->with('success', 'Surat berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Kriteria berhasil ditambahkan');
     }
 
     /**

@@ -22,15 +22,17 @@ class PenilaianController extends Controller
             'users.name as name',
             'kriteria.namaKriteria as criteria',
             'subkriteria.nilai as rating',
-            'subkriteria.keterangan as description')
-        ->leftJoin('users', 'users.id', '=', 'penilaian.user_id')
-        ->leftJoin('kriteria', 'kriteria.id', '=', 'penilaian.kriteria_id')
-        ->leftJoin('subkriteria', 'subkriteria.id', '=', 'penilaian.subkriteria_id')
-        ->get();
+            'subkriteria.keterangan as description'
+        )
+            ->leftJoin('users', 'users.id', '=', 'penilaian.user_id')
+            ->leftJoin('kriteria', 'kriteria.id', '=', 'penilaian.kriteria_id')
+            ->leftJoin('subkriteria', 'subkriteria.id', '=', 'penilaian.subkriteria_id')
+            ->get();
+
 
         $user = User::get();
         $kriteria = Kriterias::get();
-        return view('penilaian', compact('subkriteria','scores', 'user', 'kriteria'))->with('i', 0);
+        return view('penilaian', compact('subkriteria', 'scores', 'user', 'kriteria'))->with('i', 0);
     }
 
     public function create()
@@ -50,17 +52,21 @@ class PenilaianController extends Controller
         ]);
 
         // Save the alternative
-
-        // Save the score
-        foreach ($request->get('criteria') as $idKriteria => $subkriteria) {
-            $score = new Penilaian();
-            $score->user_id = $request->user_id;
-            $score->kriteria_id = $idKriteria;
-            $score->subkriteria_id = $subkriteria;
-            $score->save();
+        $sample = Penilaian::where('user_id', '=', $request->user_id)->first();
+        if ($sample == null) {
+            // Save the score
+            foreach ($request->get('criteria') as $idKriteria => $subkriteria) {
+                $score = new Penilaian();
+                $score->user_id = $request->user_id;
+                $score->kriteria_id = $idKriteria;
+                $score->subkriteria_id = $subkriteria;
+                $score->save();
+            }
+            return redirect()->route('penilaian')
+                    ->with('success', 'Penilaian Mitra Berhasil Ditambahkan');
+        } else {
+            return redirect()->route('penilaian')
+                    ->with('Fail', 'Failed to Insert Data');
         }
-
-        return redirect()->route('penilaian')
-            ->with('success', 'Alternative created successfully.');
     }
 }

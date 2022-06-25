@@ -50,6 +50,8 @@ class NormalisasiController extends Controller
 
         // Normalization
         foreach ($user as $a) {
+            $sample = Penilaian::where('user_id', '=', $a->id)->first();
+            if ($sample !=  null) {
             // Get all scores for each alternative id
             $afilter = $scores->where('ida', $a->id)->values()->all();          
             // Loop each criteria
@@ -73,7 +75,7 @@ class NormalisasiController extends Controller
                 $afilter[$icw]->nilai = round($result, 2);                     
             }
         }
-        
+    }
        
         return view('normalisasi', compact('scores', 'user','kriteria'))->with('i', 0);
 

@@ -29,42 +29,43 @@
                             </button>
                         </div>
                         @endif
-                        <br>
-                        <table id="mytable" class="display nowrap table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    @foreach ($kriteria as $c)
-                                    <th>{{$c->namaKriteria}}</th>
-                                    @endforeach
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                            <caption>Jumlah Normalisasi : {{count($user)}}</caption>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Name</th>
+                                                        @foreach ($kriteria as $c)
+                                                        <th>{{$c->namaKriteria}}</th>
+                                                        @endforeach
+                                                    </tr>
+                                                    @foreach ($user as $a)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $a->name}}</td>
+                                                        @php
+                                                        $scr = $scores->where('ida', $a->id)->all();
+                                                        @endphp
+                                                        @foreach ($scr as $s)
+                                                        <td>{{$s->nilai}}</td>
+                                                        @endforeach
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-                                @endif
-                                    @foreach ($user as $a)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $a->name}}</td>
-                                        @php
-                                        $scr = $scores->where('ida', $a->id)->all();
-                                        @endphp
-                                        @foreach ($scr as $s)
-                                        <td>{{$s->nilai}}</td>
-                                        @endforeach                                     
-                                    </tr>
-                                    @endforeach
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

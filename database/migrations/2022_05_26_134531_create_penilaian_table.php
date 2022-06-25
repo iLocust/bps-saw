@@ -16,11 +16,11 @@ class CreatePenilaianTable extends Migration
         Schema::create('penilaian', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('kriteria_id');
-            $table->foreign('kriteria_id')->references('id')->on('kriteria');
+            $table->foreign('kriteria_id')->references('id')->on('kriteria')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('subkriteria_id');
-            $table->foreign('subkriteria_id')->references('id')->on('subkriteria');
+            $table->foreign('subkriteria_id')->references('id')->on('subkriteria')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

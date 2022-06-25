@@ -47,28 +47,31 @@ class RankingController extends Controller
 
         // Normalization
         foreach ($user as $a) {
-            // Get all scores for each alternative id
-            $afilter = $scores->where('ida', $a->id)->values()->all();
-            // Loop each criteria
-            foreach ($kriteria as $icw => $cw) {
+            $sample = Penilaian::where('user_id', '=', $a->id)->first();
+            if ($sample !=  null) {
+                // Get all scores for masing masing subkriteria
+                $afilter = $scores->where('ida', $a->id)->values()->all();
+                // Loop each criteria
+                foreach ($kriteria as $icw => $cw) {
 
-                // Get all rating value for each criteria
-                $rates = $cscores->map(function ($val) use ($cw) {
-                    if ($cw->id == $val->idk) {
-                        return $val->nilai;
+                    // Get all rating value for each criteria
+                    $rates = $cscores->map(function ($val) use ($cw) {
+                        if ($cw->id == $val->idk) {
+                            return $val->nilai;
+                        }
+                    })->toArray();
+                    // array_filter for removing null value caused by map,
+                    // array_values for reiindex the array           
+                    $rates = array_values(array_filter($rates));
+                    if ($cw->type == 'benefit') {
+                        $result = $afilter[$icw]->nilai / max($rates);
+                        $msg = 'rate ' . $afilter[$icw]->nilai . ' max ' . max($rates) . ' res ' . $result;
+                    } elseif ($cw->type == 'cost') {
+                        $result = min($rates) / $afilter[$icw]->nilai;
                     }
-                })->toArray();
-                // array_filter for removing null value caused by map,
-                // array_values for reiindex the array           
-                $rates = array_values(array_filter($rates));
-                if ($cw->type == 'benefit') {
-                    $result = $afilter[$icw]->nilai / max($rates);
-                    $msg = 'rate ' . $afilter[$icw]->nilai . ' max ' . max($rates) . ' res ' . $result;
-                } elseif ($cw->type == 'cost') {
-                    $result = min($rates) / $afilter[$icw]->nilai;
+                    $result *= $cw->bobot;
+                    $afilter[$icw]->nilai = round($result, 2);
                 }
-                $result *= $cw->bobot;
-                $afilter[$icw]->nilai = round($result, 2);
             }
         }
 
